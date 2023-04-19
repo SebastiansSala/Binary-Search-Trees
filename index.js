@@ -48,24 +48,30 @@ class Tree {
       return this.root;
   }
 
-  deleteNode(data) {
-     if (root == null) {
-      root = new Node(data);
-      return root;
-    }
-    
+  deleteNode(root, data) {
+      
+      if(root === null){
+          return null;
+      }
+
     if (root.data > data) {
-      root.left = this.insertNode(root.left, data);
+      root.left = this.deleteNode(root.left, data);
     } else if (root.data < data) {
-      root.right = this.insertNode(root.right, data);
+      root.right = this.deleteNode(root.right, data);
     }else{
         if(root.left === null && root.right === null){
-            root.pop();
+            root = null;
+        }else if(root.left === null && root.right){
+            root = root.right;
+        }else if(root.left && root.right === null){
+            root = root.left;
+        }else{
+            
         }
     }
     return root;
   }
-
+ 
   constructTree(arrayTree) {
     if (!arrayTree.length) {
       return null;
@@ -117,6 +123,5 @@ class Tree {
   
   const myTree = new Tree([2, 3, 1, 5, 10, 7, 1]); // 1 2 3 5 7 10
   myTree.insert(6);
-  myTree.deletee(3);
+  myTree.deletee(7);
   myTree.prettyPrint(myTree.root);
-  
