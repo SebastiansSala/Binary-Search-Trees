@@ -15,7 +15,11 @@ class Node {
       if (!arrayTree.length) {
         return null;
       }
-      let sortedArray = mergeSort(arrayTree);
+      const duplicatesRemovedArray = arrayTree.filter((elem, index) => {
+          return arrayTree.indexOf(elem) === index;
+      });
+      
+      let sortedArray = mergeSort(duplicatesRemovedArray);
       let constructedTree = constructTree(sortedArray);
       return constructedTree;
     }
@@ -70,5 +74,5 @@ class Node {
     }
   }
   
-  const myTree = new Tree([2, 3, 1, 5, 10, 7]);
+  const myTree = new Tree([2, 3, 1, 5, 10, 7, 1]); // 1 2 3 5 7 10
   prettyPrint(myTree.root);
