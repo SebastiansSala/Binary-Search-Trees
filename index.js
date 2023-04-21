@@ -13,12 +13,42 @@ class Tree {
 
   buildTree(arrayTree) {
     if (!arrayTree.length) return null;
-    const duplicatesRemovedArray = arrayTree.filter((elem, index) => {
-      return arrayTree.indexOf(elem) === index;
-    });
-
+    const duplicatesRemovedArray = [...new Set(arrayTree)];
     let sortedArray = this.mergeSort(duplicatesRemovedArray);
     return this.constructTree(sortedArray);
+  }
+
+  constructTree(arrayTree) {
+    if (!arrayTree.length) {
+      return null;
+    }
+    let mid = Math.floor(arrayTree.length / 2);
+    let left = arrayTree.slice(0, mid);
+    let right = arrayTree.slice(mid + 1);
+    let node = new Node(arrayTree[mid]);
+    node.left = this.constructTree(left);
+    node.right = this.constructTree(right);
+    return node;
+  }
+
+  mergeSort(arrayTree) {
+    if (arrayTree.length <= 1) return arrayTree;
+    let mid = Math.floor(arrayTree.length / 2);
+    let left = arrayTree.slice(0, mid);
+    let right = arrayTree.slice(mid);
+    return this.merge(this.mergeSort(left), this.mergeSort(right));
+  }
+
+  merge(left, right) {
+    const arrayMerged = [];
+    while (left.length && right.length) {
+      if (left[0] < right[0]) {
+        arrayMerged.push(left.shift());
+      } else {
+        arrayMerged.push(right.shift());
+      }
+    }
+    return arrayMerged.concat(left).concat(right);
   }
 
   insert(data) {
@@ -147,58 +177,35 @@ class Tree {
 
   height(node) {
     if (!node) return null;
-    return 1+Math.max(this.height(node.left), this.height(node.right))
+    return 1 + Math.max(this.height(node.left), this.height(node.right));
   }
-  
-  isBalanced(root){
-      if(!root) return true;
-      const heightLeft = this.height(root.left);
-      const heightRight = this.height(root.right) ;
-      if(Math.abs(heightLeft - heightRight) > 1) return false;
-      return true;
-  }
-  
-  reBalanced(root){
-      if(isBalanced(root)) return;
-      const heightLeft = this.height(node.left);
-      const heightRight = this.height(node.right);
-      const unBalancedNode = Math.max
-      const balanceValue = Math.floor(Math.random() > max);
-      insert(balancevalue)
-  }
-  
 
-  constructTree(arrayTree) {
-    if (!arrayTree.length) {
-      return null;
+  isBalanced(node = this.root) {
+    if (!node) return true;
+    const heightLeft = this.height(node.left);
+    const heightRight = this.height(node.right);
+    if (Math.abs(heightLeft - heightRight) > 1) return false;
+    return this.isBalanced(node.left) && this.isBalanced(node.right);
+  }
+
+  reBalanced(root) {
+    if (isBalanced(root)) return;
+    const heightLeft = this.height(node.left);
+    const heightRight = this.height(node.right);
+    const unbalancedNode = leftHeight > rightHeight ? root.left : root.right;
+    const newRoot = this.rebalanceNode(unbalancedNode);
+    if (root === this.root) {
+      this.root = newRoot;
+    } else if (root.left === unbalancedNode) {
+      root.left = newRoot;
+    } else {
+      root.right = newRoot;
     }
-    let mid = Math.floor(arrayTree.length / 2);
-    let left = arrayTree.slice(0, mid);
-    let right = arrayTree.slice(mid + 1);
-    let node = new Node(arrayTree[mid]);
-    node.left = this.constructTree(left);
-    node.right = this.constructTree(right);
-    return node;
   }
 
-  mergeSort(arrayTree) {
-    if (arrayTree.length <= 1) return arrayTree;
-    let mid = Math.floor(arrayTree.length / 2);
-    let left = arrayTree.slice(0, mid);
-    let right = arrayTree.slice(mid);
-    return this.merge(this.mergeSort(left), this.mergeSort(right));
-  }
-
-  merge(left, right) {
-    const arrayMerged = [];
-    while (left.length && right.length) {
-      if (left[0] < right[0]) {
-        arrayMerged.push(left.shift());
-      } else {
-        arrayMerged.push(right.shift());
-      }
-    }
-    return arrayMerged.concat(left).concat(right);
+  rebalanceNode(node) {
+    const arr = this.inorder(node);
+    return this.constructTree(arr);
   }
 
   prettyPrint(node, prefix = "", isLeft = true) {
@@ -216,3 +223,10 @@ class Tree {
     }
   }
 }
+
+const myTree = new Tree([5, 3, 7, 2, 4, 6, 8, 1]);
+myTree.prettyPrint(myTree.root);
+//myTree.deletee(3);
+//console.log(myTree.levelOrder(myTree.root));
+//console.log(myTree.heigth(3));
+console.log(myTree.isBalanced());
