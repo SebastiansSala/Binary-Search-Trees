@@ -19,9 +19,7 @@ class Tree {
   }
 
   constructTree(arrayTree) {
-    if (!arrayTree.length) {
-      return null;
-    }
+    if (!arrayTree.length) return null;
     let mid = Math.floor(arrayTree.length / 2);
     let left = arrayTree.slice(0, mid);
     let right = arrayTree.slice(mid + 1);
@@ -71,7 +69,7 @@ class Tree {
     return root;
   }
 
-  deletee(data) {
+  deleteValue(data) {
     this.root = this.deleteNode(this.root, data);
     return this.root;
   }
@@ -187,26 +185,26 @@ class Tree {
     if (Math.abs(heightLeft - heightRight) > 1) return false;
     return this.isBalanced(node.left) && this.isBalanced(node.right);
   }
-
-  reBalanced(root) {
-    if (isBalanced(root)) return;
+ /*
+  reBalanced(node = this.root) {
+    if (this.isBalanced(node)) return;
     const heightLeft = this.height(node.left);
-    const heightRight = this.height(node.right);
-    const unbalancedNode = leftHeight > rightHeight ? root.left : root.right;
+    const rightHeight = this.height(node.right);
+    const unbalancedNode = heightLeft > rightHeight ? node.left : node.right;
     const newRoot = this.rebalanceNode(unbalancedNode);
-    if (root === this.root) {
-      this.root = newRoot;
-    } else if (root.left === unbalancedNode) {
-      root.left = newRoot;
+    if (node === this.node) {
+      this.node = newRoot;
+    } else if (node.left === unbalancedNode) {
+      node.left = newRoot;
     } else {
-      root.right = newRoot;
+      node.right = newRoot;
     }
   }
 
   rebalanceNode(node) {
     const arr = this.inorder(node);
     return this.constructTree(arr);
-  }
+  } */
 
   prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) return null;
@@ -223,10 +221,3 @@ class Tree {
     }
   }
 }
-
-const myTree = new Tree([5, 3, 7, 2, 4, 6, 8, 1]);
-myTree.prettyPrint(myTree.root);
-//myTree.deletee(3);
-//console.log(myTree.levelOrder(myTree.root));
-//console.log(myTree.heigth(3));
-console.log(myTree.isBalanced());
