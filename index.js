@@ -146,9 +146,17 @@ class Tree {
     return counter;
   }
 
-  heigth(node) {
+  height(node) {
     if (!node) return null;
-    return Math.max(this.heigth(node.left), this.heigth(node.right)) + 1;
+    return Math.max(this.height(node.left), this.height(node.right))+1;
+  }
+  
+  isBalanced(root){
+      if(!root) return null;
+      const heightLeft = this.height(root.left);
+      const heightRight = this.height(root.right) ;
+      if(Math.abs(heightLeft - heightRight) > 1) return false;
+      return true;
   }
 
   constructTree(arrayTree) {
@@ -200,14 +208,8 @@ class Tree {
   }
 }
 
-const myTree = new Tree([2, 3, 1, 5, 10, 7, 1]);
+const myTree = new Tree([2, 3, 1, 5, 10, 7, 1, 8, 6]);
 myTree.prettyPrint(myTree.root);
-console.log(myTree.levelOrder(myTree.root));
-console.log(myTree.height(3));
-
-
-
-
-
-
-
+//console.log(myTree.levelOrder(myTree.root));
+//console.log(myTree.heigth(3));
+console.log(myTree.isBalanced(myTree.root));
